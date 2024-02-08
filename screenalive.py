@@ -17,7 +17,10 @@ def move_mouse(target_position:tuple, steps=40):
     for _ in range(steps):
         current_x += x_delta
         current_y += y_delta
-        win32api.SetCursorPos((current_x, current_y))
+        try:
+            win32api.SetCursorPos((current_x, current_y))
+        except BaseException as ex:
+            pass
         time.sleep(speed)
 
 def press_keys(keys=[win32con.VK_LMENU, win32con.VK_TAB]):
@@ -30,14 +33,17 @@ def press_keys(keys=[win32con.VK_LMENU, win32con.VK_TAB]):
 
 if __name__ == '__main__':
     while True:
-        action = random.choice([0,1])
-        if action == 0:
-            press_keys()
-            time.sleep(1)
-            press_keys()
-        elif action == 1:
-            move_mouse(
-                (random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT))
-            )
+        try:
+            action = random.choice([0,1])
+            if action == 0:
+                press_keys()
+                time.sleep(1)
+                press_keys()
+            elif action == 1:
+                move_mouse(
+                    (random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT))
+                )
+        except BaseException:
+            pass
         #interval
         time.sleep(INTERVAL)
